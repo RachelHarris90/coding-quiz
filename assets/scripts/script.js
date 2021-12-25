@@ -11,63 +11,73 @@
 
 // Sections on the page to show/hide based on stage of game
 var questionSection = document.getElementById("questions").hidden = true;
-var scoresSection = document.getElementById("scores").hidden = true;
+var currentScoreSection = document.getElementById("scores").hidden = true;
 var scoreboardSection = document.getElementById("scoreboard").hidden = true;
+
 var startGameSection = document.getElementById("start-game")
 var startButton = document.getElementById("start-button")
 
 var timer = document.getElementById("timer")
-var secondsRemaining = 10;
+var secondsRemaining = 11;
 
-
-// Do I need any of this? Should I use setAttribute instead?
-// var questionTitle1 = document.getElementById('#question-title');
-// var answerA1 = document.getElementById('#answerA');
-// var answerB1 = document.getElementById('#answerB');
-// var answerC1 = document.getElementById('#answerC');
-// var answerD1 = document.getElementById('#answerD');
+var answerResponse = document.getElementById("answer-response")
 
 var questions = [ 
     {
         questionTitle: "Which is Australia's second largest state by area?",
-        answerA: "New South Wales", 
-        answerB: "Queensland (correct answer)", 
-        answerC: "South Australia",
-        answerD: "Western Australia", 
+        answers: [
+            "New South Wales",
+            "Queensland (correct answer)", 
+            "South Australia",
+            "Western Australia", 
+        ],
+        correctAnswer: 1,
     },
     {
         questionTitle: "Which is the largest desert in Australia?",
-        answerA: "Gibson Desert", 
-        answerB: "Great Sandy Desert", 
-        answerC: "Great Victoria Desert (correct answer)",
-        answerD: "Simpson Desert", 
+        answers: [
+            "Gibson Desert",
+            "Great Sandy Desert",  
+            "Great Victoria Desert (correct answer)",
+            "Simpson Desert", 
+        ],
+        correctAnswer: 2,
     },
     {
         questionTitle: "Which body of water is home to the Great Barrier Reef?",
-        answerA: "Arafura Sea", 
-        answerB: "Coral sea (correct answer)", 
-        answerC: "Solomon Sea",
-        answerD: "Timor sea", 
+        answers: [
+            "Arafura Sea",
+            "Coral sea (correct answer)",  
+            "Solomon Sea",
+            "Timor sea", 
+        ],
+        correctAnswer: 1,
     },
     {
         questionTitle: "The Ashmore and Cartier Islands are situated in which ocean?",
-        answerA: "Atlantic Ocean", 
-        answerB: "Indian Ocean (correct answer)", 
-        answerC: "Pacific Ocean",
-        answerD: "Southern Ocean", 
+        answers: [
+            "Indian Ocean (correct answer)", 
+            "Atlantic Ocean",
+            "Pacific Ocean",
+            "Southern Ocean", 
+        ],
+        correctAnswer: 0,
     },
     {
         questionTitle: "Which is the most populous of the Torres Strait Islands?",
-        answerA: "Badu Island", 
-        answerB: "Horn Island", 
-        answerC: "Murray Island",
-        answerD: "Thursday Island (correct answer)", 
+        answers: [
+            "Badu Island", 
+            "Horn Island",
+            "Murray Island",
+            "Thursday Island (correct answer)", 
+        ],
+        correctAnswer: 3,
     },
   ];
 
 // Timer function
 function startTimer() {
-    var TimerInterval = setInterval(function() {
+    var timerInterval = setInterval(function() {
         secondsRemaining--;
         timer.textContent = secondsRemaining;
 
@@ -91,19 +101,20 @@ function startGame() {
 
 startButton.addEventListener("click", startGame());
 
+// Show first question
 
 
 
+// Check if the answer selected is correct
+function checkAnswer() {
+    if (answerSelected === questions.answers.correctAnswer) {
+        answerResponse.textContent = "You're right!";
+        // incriment time
+    } else {
+        answerResponse.textContent = "Sorry, that's not right";
+        // show next question
+        // decrement time
+    }
+  };
 
-// Show the question
-
-// function hideScores() {
-    
-// }
-
-
-// function startTimer() {
-
-// }
-
-// use minus equals to reduce the time
+  document.getElementById('button').addEventListener("click", checkAnswer(answerSelected));
