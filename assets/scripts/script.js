@@ -20,6 +20,8 @@ var startButton = document.getElementById("start-button")
 var timer = document.getElementById("timer")
 var secondsRemaining = 11;
 
+var questionTitle = document.getElementById("question-title")
+var questionTitle = document.getElementById("answers")
 var answerResponse = document.getElementById("answer-response")
 
 var questions = [ 
@@ -75,46 +77,47 @@ var questions = [
     },
   ];
 
-// Timer function
-function startTimer() {
-    var timerInterval = setInterval(function() {
-        secondsRemaining--;
-        timer.textContent = secondsRemaining;
-
-        if(secondsLeft === 0) {
-            clearInterval(timerInterval);
-        }
-        // Incriment or decriment score
-            // timeleft = timeleft - 10
-            // Use minus equals to reduce the time
-        // Show next question
-    }, 1000);
-}
-
-startButton.addEventListener("click", startTimer());
-
+// When the start button is clicked, the timer starts and the first question is displayed
 function startGame() {
-    questionSection.setAttribute("hidden", false);
     startGameSection.setAttribute("hidden", true);
-    // start the timer
+    
+    function showQuestions() {
+        questionSection = document.getElementById("questions").hidden = false;
+        questionTitle.textContent = questions.questionTitle[0];
+    }
+    showQuestions()
+    
+    function startTimer() {
+        var timerInterval = setInterval(function() {
+            secondsRemaining--;
+            timer.textContent = secondsRemaining;
+    
+            if(secondsLeft === 0) {
+                clearInterval(timerInterval);
+            }
+            // Incriment or decriment score
+                // timeleft = timeleft - 10
+                // Use minus equals to reduce the time
+            // Show next question
+        }, 1000);
+    }
+    startTimer();
   }
 
-startButton.addEventListener("click", startGame());
-
-// Show first question
+startButton.addEventListener("click", startGame)
 
 
 
 // Check if the answer selected is correct
-function checkAnswer() {
-    if (answerSelected === questions.answers.correctAnswer) {
-        answerResponse.textContent = "You're right!";
-        // incriment time
-    } else {
-        answerResponse.textContent = "Sorry, that's not right";
-        // show next question
-        // decrement time
-    }
-  };
+// function checkAnswer() {
+//     if (answerSelected === questions.answers.correctAnswer) {
+//         answerResponse.textContent = "You're right!";
+//         // incriment time
+//     } else {
+//         answerResponse.textContent = "Sorry, that's not right";
+//         // show next question
+//         // decrement time
+//     }
+//   };
 
-  document.getElementById('button').addEventListener("click", checkAnswer(answerSelected));
+//   document.getElementById('button').addEventListener("click", checkAnswer(answerSelected));
