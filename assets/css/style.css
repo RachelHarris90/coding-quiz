@@ -29,6 +29,7 @@ header {
 main {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 #answerA, #answerB, #answerC, #answerD {
@@ -51,5 +52,6 @@ main {
 #high-scores {
     background-color: var(--medium-color);
     color: white;
-    padding: 20px;
+    padding: 18px;
+    border: 0;
 }

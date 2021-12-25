@@ -13,19 +13,40 @@
 var questionSection = document.getElementById("questions").hidden = true;
 var currentScoreSection = document.getElementById("scores").hidden = true;
 var scoreboardSection = document.getElementById("scoreboard").hidden = true;
-
 var startGameSection = document.getElementById("start-game")
 var startButton = document.getElementById("start-button")
+var highScoresButton = document.getElementById("high-scores")
 
 var timer = document.getElementById("timer")
-var secondsRemaining = 11;
+var secondsRemaining = 61;
 
+var winCounter = 0;
+var lossCounter = 0;
+
+// TODO: Changes these to be created elements as the game is going
+// TODO: Remove placeholder names
+var highscores = [
+    {
+        name: "RH",
+        score: "3",
+
+    },
+    {
+        name: "AA",
+        score: "2",
+
+    },
+    ];
+
+// TODO: Changes these to be created elements as the game is starting
+var questionNumber = document.getElementById("question-number")
 var questionTitle = document.getElementById("question-title")
-var questionTitle = document.getElementById("answers")
+var answerOptions = document.getElementById("answer-options")
 var answerResponse = document.getElementById("answer-response")
 
 var questions = [ 
     {
+        questionNumber: "Question 1",
         questionTitle: "Which is Australia's second largest state by area?",
         answers: [
             "New South Wales",
@@ -36,6 +57,7 @@ var questions = [
         correctAnswer: 1,
     },
     {
+        questionNumber: "Question 2",
         questionTitle: "Which is the largest desert in Australia?",
         answers: [
             "Gibson Desert",
@@ -46,6 +68,7 @@ var questions = [
         correctAnswer: 2,
     },
     {
+        questionNumber: "Question 3",
         questionTitle: "Which body of water is home to the Great Barrier Reef?",
         answers: [
             "Arafura Sea",
@@ -56,6 +79,7 @@ var questions = [
         correctAnswer: 1,
     },
     {
+        questionNumber: "Question 4",
         questionTitle: "The Ashmore and Cartier Islands are situated in which ocean?",
         answers: [
             "Indian Ocean (correct answer)", 
@@ -66,6 +90,7 @@ var questions = [
         correctAnswer: 0,
     },
     {
+        questionNumber: "Question 5",
         questionTitle: "Which is the most populous of the Torres Strait Islands?",
         answers: [
             "Badu Island", 
@@ -80,20 +105,22 @@ var questions = [
 // When the start button is clicked, the timer starts and the first question is displayed
 function startGame() {
     startGameSection.setAttribute("hidden", true);
-    
+    // TODO: Show the questions from the array
     function showQuestions() {
         questionSection = document.getElementById("questions").hidden = false;
-        questionTitle.textContent = questions.questionTitle[0];
-    }
-    showQuestions()
+        }
+    showQuestions();
+
+    // Loop through questions
     
     function startTimer() {
         var timerInterval = setInterval(function() {
             secondsRemaining--;
             timer.textContent = secondsRemaining;
     
-            if(secondsLeft === 0) {
+            if (secondsRemaining === 0) {
                 clearInterval(timerInterval);
+                timer.textContent = "You're out of time 😞"
             }
             // Incriment or decriment score
                 // timeleft = timeleft - 10
@@ -106,7 +133,15 @@ function startGame() {
 
 startButton.addEventListener("click", startGame)
 
+function viewHighScores() {
+    startGameSection.setAttribute("hidden", true);
+    currentScoreSection = document.getElementById("scores").hidden = true;
+    questionSection = document.getElementById("questions").hidden = true;
+    scoreboardSection = document.getElementById("scoreboard").hidden = false;
 
+    
+}
+highScoresButton.addEventListener("click", viewHighScores)
 
 // Check if the answer selected is correct
 // function checkAnswer() {
@@ -121,3 +156,8 @@ startButton.addEventListener("click", startGame)
 //   };
 
 //   document.getElementById('button').addEventListener("click", checkAnswer(answerSelected));
+
+
+
+
+// TODO: Add high scores to list - refer to 01 Monday / 07 Ins Create Append
