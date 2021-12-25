@@ -55,3 +55,12 @@ main {
     padding: 18px;
     border: 0;
 }
+
+
+li {
+    list-style: none;
+    background-color: var(--dark-color);
+    color: white;
+    margin: 5px;
+    padding: 5px;
+}

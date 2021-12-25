@@ -108,7 +108,25 @@ function startGame() {
     // TODO: Show the questions from the array
     function showQuestions() {
         questionSection = document.getElementById("questions").hidden = false;
+        
+        var questionIndex = 0;
+
+        questionNumber.textContent = questions[questionIndex].questionNumber;
+        questionTitle.textContent = questions[questionIndex].questionTitle;
+
+        var answer
+     
+        for (var i = 0; i < questions[questionIndex].answers.length; i++) {
+            var answer = questions[questionIndex].answers[i];
+
+            var li = document.createElement("li");
+            li.textContent = answer;
+            li.setAttribute("data-index", i);
+
+            answerOptions.appendChild(li);
         }
+    }
+
     showQuestions();
 
     // Loop through questions
@@ -160,4 +178,14 @@ highScoresButton.addEventListener("click", viewHighScores)
 
 
 
-// TODO: Add high scores to list - refer to 01 Monday / 07 Ins Create Append
+// TODO: Add high scores to list
+// Store as an array of objects
+// Save high score with localStorage.getItem which will give a string
+// JSON.parse it so get an array of objections
+// Loop through array to put the players name and score for each one on screen
+// To update, fetch from local storage, add to the array and save it to local storage
+// function updateScores() {
+    // localStorage.setItem("name:score"), JSON.stringify({
+    //     name: playername,
+    //     points: score,
+    // })
