@@ -6,11 +6,11 @@
     --incorrect-color: #db314a;
 }
 
-h1, h2 {
+h1, h2, h3 {
     font-family: caveat;
 }
 
-h3, p, ul, li {
+p, ul, li {
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -29,4 +29,22 @@ header {
 main {
     display: flex;
     align-items: center;
+}
+
+#answerA, #answerB, #answerC, #answerD {
+    outline: none;
+    border: 0;
+    background-color: var(--dark-color);
+    color: var(--light-color);    
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    list-style: none;
+}
+
+#timer-card, #high-scores {
+    background-color: var(--medium-color);
+    color: white;
+    padding: 10px;
+
 }
