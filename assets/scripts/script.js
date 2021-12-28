@@ -1,14 +1,3 @@
-// WHEN I click the start button
-// THEN a timer starts and I am presented with a question
-// WHEN I answer a question
-// THEN I am presented with another question
-// WHEN I answer a question incorrectly
-// THEN time is subtracted from the clock
-// WHEN all questions are answered or the timer reaches 0
-// THEN the game is over
-// WHEN the game is over
-// THEN I can save my initials and my score
-
 // Sections on the page to show/hide based on stage of game
 var questionSection = document.getElementById("questions").hidden = true;
 var currentScoreSection = document.getElementById("scores").hidden = true;
@@ -20,29 +9,13 @@ var highScoresButton = document.getElementById("high-scores")
 var timer = document.getElementById("timer")
 var secondsRemaining = 61;
 
-var winCounter = 0;
-var lossCounter = 0;
-
-// TODO: Changes these to be created elements as the game is going
-// TODO: Remove placeholder names
-var highscores = [
-    {
-        name: "RH",
-        score: "3",
-
-    },
-    {
-        name: "AA",
-        score: "2",
-
-    },
-    ];
-
-// TODO: Changes these to be created elements as the game is starting
 var questionNumber = document.getElementById("question-number")
 var questionTitle = document.getElementById("question-title")
 var answerOptions = document.getElementById("answer-options")
 var answerResponse = document.getElementById("answer-response")
+
+var highScoresList = document.querySelector("#high-scores-list")
+var clearHighScoresList = document.querySelector("#clear-high-scores")
 
 var questions = [ 
     {
@@ -102,6 +75,9 @@ var questions = [
     },
   ];
 
+// TODO: Remove placeholder names
+var highScoresArray = ["RH - 54", "LR - 32"];
+
 // When the start button is clicked, the timer starts and the first question is displayed
 function startGame() {
     startGameSection.setAttribute("hidden", true);
@@ -109,61 +85,58 @@ function startGame() {
     function showQuestions() {
         questionSection = document.getElementById("questions").hidden = false;
         
+        // Create variables to use to setup the list of answers
         var questionIndex = 0;
-
         questionNumber.textContent = questions[questionIndex].questionNumber;
         questionTitle.textContent = questions[questionIndex].questionTitle;
-
-        var answer
      
+        var answer
+
+        // Loop through to add the answers to the list
         for (var i = 0; i < questions[questionIndex].answers.length; i++) {
             var answer = questions[questionIndex].answers[i];
 
-            var li = document.createElement("li");
-            li.textContent = answer;
-            li.setAttribute("data-index", i);
+            var button = document.createElement("button");
+            button.textContent = answer;
 
-            answerOptions.appendChild(li);
+            // Add answers as li's under the ul
+            answerOptions.appendChild(button);
+            button.setAttribute("class", "answerItem");
         }
     }
-
+    // Run the show questions function
     showQuestions();
+    
+function startTimer() {
+    var timerInterval = setInterval(function() {
+        secondsRemaining--;
+        timer.textContent = secondsRemaining;
 
-    // Loop through questions
-    
-    function startTimer() {
-        var timerInterval = setInterval(function() {
-            secondsRemaining--;
-            timer.textContent = secondsRemaining;
-    
-            if (secondsRemaining === 0) {
-                clearInterval(timerInterval);
-                timer.textContent = "You're out of time 😞"
-            }
-            // Incriment or decriment score
-                // timeleft = timeleft - 10
-                // Use minus equals to reduce the time
-            // Show next question
-        }, 1000);
-    }
+        // TODO: When time runs out, go to end of the game
+        if (secondsRemaining === 0) {
+            clearInterval(timerInterval);
+            timer.textContent = "You're out of time 😞"
+        }
+    }, 1000);
+}
     startTimer();
   }
+startButton.addEventListener("click", startGame);
 
-startButton.addEventListener("click", startGame)
+// TODO: Capture selected answer
+// var selectedAnswer = document.querySelector(".answerItem");
 
-function viewHighScores() {
-    startGameSection.setAttribute("hidden", true);
-    currentScoreSection = document.getElementById("scores").hidden = true;
-    questionSection = document.getElementById("questions").hidden = true;
-    scoreboardSection = document.getElementById("scoreboard").hidden = false;
+// TODO: Check if the selected answer is correct
+// function showSelectedAnwer() {
+//     var selectedAnswer = button.value;
+//     answerResponse.textContent = selectedAnswer;
+// }
 
-    
-}
-highScoresButton.addEventListener("click", viewHighScores)
+// answerResponse.addEventListener("click", showSelectedAnwer);
 
-// Check if the answer selected is correct
-// function checkAnswer() {
-//     if (answerSelected === questions.answers.correctAnswer) {
+// // Check if the answer selected is correct
+// selectedAnswer.addEventListener("click", function checkAnswer() {
+//     if (selectedAnswer === questions[questionIndex].correctAnswer) {
 //         answerResponse.textContent = "You're right!";
 //         // incriment time
 //     } else {
@@ -171,21 +144,35 @@ highScoresButton.addEventListener("click", viewHighScores)
 //         // show next question
 //         // decrement time
 //     }
-//   };
-
-//   document.getElementById('button').addEventListener("click", checkAnswer(answerSelected));
+//   });
 
 
-
-
-// TODO: Add high scores to list
-// Store as an array of objects
+// TODO: At the end of the game, enter initials and save score
+// Fetch array from local storage, add to the array and save it to local storage
+// Store in an array by concatenating initials and score [IN - 34]
 // Save high score with localStorage.getItem which will give a string
-// JSON.parse it so get an array of objections
-// Loop through array to put the players name and score for each one on screen
-// To update, fetch from local storage, add to the array and save it to local storage
-// function updateScores() {
-    // localStorage.setItem("name:score"), JSON.stringify({
-    //     name: playername,
-    //     points: score,
-    // })
+
+
+function renderHighScores() {
+    startGameSection.setAttribute("hidden", true);
+    currentScoreSection = document.getElementById("scores").hidden = true;
+    questionSection = document.getElementById("questions").hidden = true;
+    scoreboardSection = document.getElementById("scoreboard").hidden = false;
+
+    // TODO: Get these from local storage instead of hard coded
+    // Loop through to add the high scores and render in a list
+    for (var i = 0; i < highScoresArray.length; i++) {
+
+        var li = document.createElement("li");
+        li.textContent = highScoresArray[i];
+        highScoresList.appendChild(li);
+        
+    }
+}
+
+highScoresButton.addEventListener("click", renderHighScores());
+
+
+clearHighScoresList.addEventListener("click", function() {
+    highScoresList = [];
+})
