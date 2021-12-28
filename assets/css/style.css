@@ -12,6 +12,7 @@ h1, h2, h3, p, ul, button {
     color: var(--text-color);
 }
 
+
 body {
     background-image: linear-gradient(to right, purple, pink);
 }
@@ -22,6 +23,11 @@ header {
     align-items: center;
     width: 100%;
     height: 120px;
+    background-color: var(--dark-color);
+}
+
+#main-header {
+    margin-left: 20px;
 }
 
 main {
@@ -42,21 +48,16 @@ ul {
     background-color: var(--dark-color);
     color: var(--text-color);  
     display: inline-block;
-    margin: 10px;
+    margin: 8px;
     padding: 10px;
     cursor: pointer;
     list-style: none;
 }
 
-#timer-card, #high-scores {
-    background-color: var(--dark-color);
+#timer-card, #high-scores, #start-button {
     color: var(--text-color);
     padding: 10px;
-}
-
-#high-scores {
     background-color: var(--dark-color);
-    color: var(--text-color);
-    padding: 18px;
-    border: 0;
+    border: 0px;
+
 }
