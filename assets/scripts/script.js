@@ -16,6 +16,7 @@ var answerResponse = document.getElementById("answer-response")
 
 var highScoresList = document.querySelector("#high-scores-list")
 var clearHighScoresList = document.querySelector("#clear-high-scores")
+var backToStart = document.querySelector("#back-to-start")
 
 var questions = [ 
     {
@@ -102,6 +103,7 @@ function startGame() {
             // Add answers as li's under the ul
             answerOptions.appendChild(button);
             button.setAttribute("class", "answerItem");
+            button.setAttribute("data-index", i)
         }
     }
     // Run the show questions function
@@ -124,27 +126,26 @@ function startTimer() {
 startButton.addEventListener("click", startGame);
 
 // TODO: Capture selected answer
-// var selectedAnswer = document.querySelector(".answerItem");
+
+var answerItem = document.querySelector(".answerItem");
+
+function showResponse() {
+    // Prevent default action
+    var response = "something";
+    answerResponse.textContent = response;
+    console.log(this);
+  }
+
+  // Add listener to submit element
+  answerOptions.children.addEventListener("click", showResponse);
+
+
 
 // TODO: Check if the selected answer is correct
-// function showSelectedAnwer() {
-//     var selectedAnswer = button.value;
-//     answerResponse.textContent = selectedAnswer;
-// }
 
-// answerResponse.addEventListener("click", showSelectedAnwer);
+// TODO: Incriment or decriment time based on correct/incorrect answer
 
-// // Check if the answer selected is correct
-// selectedAnswer.addEventListener("click", function checkAnswer() {
-//     if (selectedAnswer === questions[questionIndex].correctAnswer) {
-//         answerResponse.textContent = "You're right!";
-//         // incriment time
-//     } else {
-//         answerResponse.textContent = "Sorry, that's not right";
-//         // show next question
-//         // decrement time
-//     }
-//   });
+// TODO: Go to next question
 
 
 // TODO: At the end of the game, enter initials and save score
@@ -168,11 +169,18 @@ function renderHighScores() {
         highScoresList.appendChild(li);
         
     }
-}
+};
 
-highScoresButton.addEventListener("click", renderHighScores());
+highScoresButton.addEventListener("click", renderHighScores);
 
 
 clearHighScoresList.addEventListener("click", function() {
     highScoresList = [];
+})
+
+backToStart.addEventListener("click", function() {
+    startGameSection.setAttribute("hidden", false);
+    currentScoreSection.setAttribute("hidden", true);
+    questionSection.setAttribute("hidden", true);
+    scoreboardSection.setAttribute("hidden", true);
 })

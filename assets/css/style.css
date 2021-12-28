@@ -1,21 +1,19 @@
 :root {
-    --light-color: #f1cdd3;
-    --medium-color: #e08e9a;
-    --dark-color: #0c0938 ;
+    --text-color: white;
+    --light-color: pink;
+    --medium-color: purple;
+    --dark-color: #0c0938;
     --correct-color: #008854;
     --incorrect-color: #db314a;
 }
 
-h1, h2, h3 {
-    font-family: caveat;
-}
-
-p, ul, li {
-    font-family: Arial, Helvetica, sans-serif;
+h1, h2, h3, p, ul, button {
+    font-family: Comfortaa;
+    color: var(--text-color);
 }
 
 body {
-    background-color: var(--light-color);
+    background-image: linear-gradient(to right, purple, pink);
 }
 
 header {
@@ -30,37 +28,35 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
-#answerA, #answerB, #answerC, #answerD {
+ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.answerItem {
     outline: none;
     border: 0;
     background-color: var(--dark-color);
-    color: var(--light-color);    
+    color: var(--text-color);  
     display: inline-block;
     margin: 10px;
+    padding: 10px;
     cursor: pointer;
     list-style: none;
 }
 
 #timer-card, #high-scores {
-    background-color: var(--medium-color);
-    color: white;
+    background-color: var(--dark-color);
+    color: var(--text-color);
     padding: 10px;
 }
 
 #high-scores {
-    background-color: var(--medium-color);
-    color: white;
+    background-color: var(--dark-color);
+    color: var(--text-color);
     padding: 18px;
     border: 0;
-}
-
-
-li {
-    list-style: none;
-    background-color: var(--dark-color);
-    color: white;
-    margin: 5px;
-    padding: 5px;
 }
