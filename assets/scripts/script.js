@@ -12,7 +12,7 @@ var secondsRemaining = 61;
 var questionNumber = document.getElementById("question-number")
 var questionTitle = document.getElementById("question-title")
 var answerOptions = document.getElementById("answer-options")
-var answerResponse = document.getElementById("answer-response")
+
 
 var highScoresList = document.querySelector("#high-scores-list")
 var clearHighScoresList = document.querySelector("#clear-high-scores")
@@ -79,36 +79,8 @@ var questions = [
 // TODO: Remove placeholder names
 var highScoresArray = ["RH - 54", "LR - 32"];
 
-// When the start button is clicked, the timer starts and the first question is displayed
-function startGame() {
-    startGameSection.setAttribute("hidden", true);
-    // TODO: Show the questions from the array
-    function showQuestions() {
-        questionSection = document.getElementById("questions").hidden = false;
-        
-        // Create variables to use to setup the list of answers
-        var questionIndex = 0;
-        questionNumber.textContent = questions[questionIndex].questionNumber;
-        questionTitle.textContent = questions[questionIndex].questionTitle;
-     
-        var answer
+var questionIndex = 0;
 
-        // Loop through to add the answers to the list
-        for (var i = 0; i < questions[questionIndex].answers.length; i++) {
-            var answer = questions[questionIndex].answers[i];
-
-            var button = document.createElement("button");
-            button.textContent = answer;
-
-            // Add answers as li's under the ul
-            answerOptions.appendChild(button);
-            button.setAttribute("class", "answerItem");
-            button.setAttribute("data-index", i)
-        }
-    }
-    // Run the show questions function
-    showQuestions();
-    
 function startTimer() {
     var timerInterval = setInterval(function() {
         secondsRemaining--;
@@ -121,37 +93,40 @@ function startTimer() {
         }
     }, 1000);
 }
+
+function showQuestions() {
+    questionSection = document.getElementById("questions").hidden = false;
+    
+    // Create variables to use to setup the list of answers
+    questionNumber.textContent = questions[questionIndex].questionNumber;
+    questionTitle.textContent = questions[questionIndex].questionTitle;
+ 
+    var answer
+
+    // Loop through to add the answers to the list
+    for (var i = 0; i < questions[questionIndex].answers.length; i++) {
+        var answer = questions[questionIndex].answers[i];
+
+        var li = document.createElement("li");
+        li.textContent = answer;
+
+        // Add answers as li's under the ul
+        // Add data-index based on the position in the list
+        li.setAttribute("class", "answerItem");
+        li.setAttribute("data-index", i);
+        answerOptions.appendChild(li);
+    }
+}
+
+// When the start button is clicked, the timer starts and the first question is displayed
+function startGame() {
+    startGameSection.setAttribute("hidden", true);
+    // TODO: Show the questions from the array
+    // Run the show questions function
+    showQuestions();
     startTimer();
   }
 startButton.addEventListener("click", startGame);
-
-// TODO: Capture selected answer
-
-var answerItem = document.querySelector(".answerItem");
-
-function showResponse() {
-    // Prevent default action
-    var response = "something";
-    answerResponse.textContent = response;
-    console.log(this);
-  }
-
-  // Add listener to submit element
-  answerOptions.children.addEventListener("click", showResponse);
-
-
-
-// TODO: Check if the selected answer is correct
-
-// TODO: Incriment or decriment time based on correct/incorrect answer
-
-// TODO: Go to next question
-
-
-// TODO: At the end of the game, enter initials and save score
-// Fetch array from local storage, add to the array and save it to local storage
-// Store in an array by concatenating initials and score [IN - 34]
-// Save high score with localStorage.getItem which will give a string
 
 
 function renderHighScores() {
@@ -167,17 +142,73 @@ function renderHighScores() {
         var li = document.createElement("li");
         li.textContent = highScoresArray[i];
         highScoresList.appendChild(li);
-        
     }
 };
 
+// TODO: Capture selected answer
+function checkAnswer(t) {
+    var li = t.target.getAttribute("data-index")
+    console.log("The selected answer it: " + li);
+
+    // Check if answer is correct and give feedback on screen
+    var answerResponse = document.getElementById("answer-response");
+
+    console.log("The correct answer is: " + questions[questionIndex].correctAnswer)
+
+    if (li == questions[questionIndex].correctAnswer) {
+        answerResponse.textContent = "That's right!";
+        
+    } else {
+        answerResponse.textContent = "Sorry, that's not right";
+        // TODO: Decriment time based on incorrect answer
+    }
+
+    // Remove previous answers
+    var answerOptions = document.getElementById("answer-options");
+    while (answerOptions.firstChild) {
+        answerOptions.removeChild(answerOptions.firstChild);
+    }
+
+    // TODO: Fix this where it shows the next question even when there are none
+    // If there are more questions, show them
+    if (questionIndex < questions.length) {
+        questionIndex++;
+        showQuestions();
+        console.log("Question length is: " + questions.length);
+        console.log("Question index is: " + questionIndex);
+    // If there are no more questions, go to the high scores page
+    } else {
+        renderHighScores();
+        clearInterval(secondsRemaining);
+    };
+
+}
+
+answerOptions.addEventListener("click", checkAnswer);
+
+
+
+
+
+
+
+// TODO: At the end of the game, enter initials and save score
+// Fetch array from local storage, add to the array and save it to local storage
+// Store in an array by concatenating initials and score [IN - 34]
+// Save high score with localStorage.getItem which will give a string
+
+
+
+
+// Navigate to the high scores section
 highScoresButton.addEventListener("click", renderHighScores);
 
-
+// Clear high scores when the option is selected
 clearHighScoresList.addEventListener("click", function() {
     highScoresList = [];
 })
 
+// Navigate back to start of game if option is selected
 backToStart.addEventListener("click", function() {
     startGameSection.setAttribute("hidden", false);
     currentScoreSection.setAttribute("hidden", true);

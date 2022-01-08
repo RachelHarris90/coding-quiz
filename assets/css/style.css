@@ -41,7 +41,6 @@ ul {
     display: flex;
     flex-direction: column;
 }
-
 .answerItem {
     outline: none;
     border: 0;
