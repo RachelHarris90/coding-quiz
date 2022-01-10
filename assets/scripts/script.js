@@ -18,6 +18,9 @@ var highScoresList = document.querySelector("#high-scores-list")
 var clearHighScoresList = document.querySelector("#clear-high-scores")
 var backToStart = document.querySelector("#back-to-start")
 
+var finalScore = document.querySelector("#final-score")
+var newScore
+
 var questions = [ 
     {
         questionNumber: "Question 1",
@@ -132,11 +135,9 @@ function renderHighScores() {
     currentScoreSection = document.getElementById("scores").hidden = true;
     questionSection = document.getElementById("questions").hidden = true;
     scoreboardSection = document.getElementById("scoreboard").hidden = false;
+    
+    getHighScores()
 
-    // 
-    // getHighScores()
-
-    // TODO: Get these from local storage instead of hard coded
     // Loop through to add the high scores and render in a list
     for (var i = 0; i < highScoresList.length; i++) {
 
@@ -146,7 +147,7 @@ function renderHighScores() {
     }
 };
 
-// TODO: Capture selected answer
+// Capture selected answer
 function checkAnswer(t) {
     var li = t.target.getAttribute("data-index")
     console.log("The selected answer it: " + li);
@@ -170,7 +171,6 @@ function checkAnswer(t) {
         answerOptions.removeChild(answerOptions.firstChild);
     }
 
-    // TODO: Fix this where it shows the next question even when there are none
     // If there are more questions, show them
     if (questionIndex+1 < questions.length) {
         questionIndex++;
@@ -182,10 +182,12 @@ function checkAnswer(t) {
         var questionSection = document.getElementById("questions").hidden = true;
         var saveScoreSection = document.getElementById("save-scores").hidden = false;
         clearInterval(secondsRemaining);
-        return;
+        timer.textContent = "Game complete!";
+
+        newScore = secondsRemaining
+        newScore.textContent = "Your final score is " + finalScore;
     };
 }
-
 answerOptions.addEventListener("click", checkAnswer);
 
 
@@ -215,9 +217,10 @@ scoresForm.addEventListener("click", function() {
         return;
     }
 
-    highScoresList.push(initials)
+    highScoresList.push(initials + "-" + newScore);
     initialsInput.value = "";
 
+    storeScores();
     getHighScores(); 
 });
 
