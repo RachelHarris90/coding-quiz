@@ -6,26 +6,31 @@ var startGameSection = document.getElementById("start-game")
 var startButton = document.getElementById("start-button")
 var highScoresButton = document.getElementById("high-scores")
 
+// Element and starting time for the timer
 var timer = document.getElementById("timer")
 var secondsRemaining = 61;
 
+// Elements for the question and answers
 var questionNumber = document.getElementById("question-number")
 var questionTitle = document.getElementById("question-title")
 var answerOptions = document.getElementById("answer-options")
 
-
+// Elements for high scores section
 var highScoresDisplay = document.querySelector("#high-scores-display")
 var clearHighScoresList = document.querySelector("#clear-high-scores")
 var backToStart = document.querySelector("#back-to-start")
 
+// To add a new score 
 var finalScore = document.querySelector("#final-score")
 var newScore
-
 var initialsInput = document.querySelector("#initials");
 var scoresForm = document.querySelector("#scores-form")
 var submitScore = document.querySelector("#submit-score")
+
+// Array of high scores to be populated as the game is being played
 var highScoresList = [];
 
+// Array of questions with their answers
 var questions = [ 
     {
         questionNumber: "Question 1",
@@ -85,6 +90,7 @@ var questions = [
   ];
 
 
+// Get high scores from local storage to show when going to high scores page
 var questionIndex = 0;
 
 function getHighScores() {
@@ -95,6 +101,7 @@ function getHighScores() {
     }
 }
 
+// Function to render high scores page and list out all scores
 function renderHighScores() {
     startGameSection.setAttribute("hidden", true);
     questionSection = document.getElementById("questions").hidden = true;
@@ -111,12 +118,14 @@ function renderHighScores() {
     }
 }
 
+
+// Function to start the clock that will be called when the game starts
 function startTimer() {
     var timerInterval = setInterval(function() {
         secondsRemaining--;
         timer.textContent = secondsRemaining;
 
-        // TODO: When time runs out, go to end of the game
+        // When time runs out, go to end of the game
         if (secondsRemaining === 0) {
             clearInterval(timerInterval);
             timer.textContent = "You're out of time 😞"
@@ -138,6 +147,7 @@ function showQuestions() {
     for (var i = 0; i < questions[questionIndex].answers.length; i++) {
         var answer = questions[questionIndex].answers[i];
 
+        // Create li's to display the answers in
         var li = document.createElement("li");
         li.textContent = answer;
 
@@ -152,16 +162,18 @@ function showQuestions() {
 // When the start button is clicked, the timer starts and the first question is displayed
 function startGame() {
     startGameSection.setAttribute("hidden", true);
-    // TODO: Show the questions from the array
     // Run the show questions function
     showQuestions();
+    // Start the timer as the game starts
     startTimer();
+    // Get the high scores to be able to add to later
     getHighScores();
   }
 startButton.addEventListener("click", startGame);
 
 // Capture selected answer
 function checkAnswer(t) {
+    // Find out answer item was selected
     var li = t.target.getAttribute("data-index")
     console.log("The selected answer it: " + li);
 
@@ -170,6 +182,7 @@ function checkAnswer(t) {
 
     console.log("The correct answer is: " + questions[questionIndex].correctAnswer)
 
+    // Give feedback based on whether question was correct or incorrect
     if (li == questions[questionIndex].correctAnswer) {
         answerResponse.textContent = "That's right!";
         
@@ -216,11 +229,13 @@ scoresForm.addEventListener("click", function() {
         return;
     }
 
+    // Add the initials and score into local storage
     highScoresList.push(initials + "-" + newScore);
     initialsInput.value = "";
 
     localStorage.setItem("highScoresList", JSON.stringify(highScoresList));
 
+    // Refresh the high scores list with the newly added score
     getHighScores();
 });
 
