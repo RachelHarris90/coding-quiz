@@ -172,14 +172,15 @@ function checkAnswer(t) {
 
     // TODO: Fix this where it shows the next question even when there are none
     // If there are more questions, show them
-    if (questionIndex < questions.length) {
+    if (questionIndex+1 < questions.length) {
         questionIndex++;
         showQuestions();
         console.log("Question length is: " + questions.length);
         console.log("Question index is: " + questionIndex);
     // If there are no more questions, go to the high scores page
     } else {
-        saveScoreSection = document.getElementById("questions").hidden = false;
+        var questionSection = document.getElementById("questions").hidden = true;
+        var saveScoreSection = document.getElementById("save-scores").hidden = false;
         clearInterval(secondsRemaining);
         return;
     };
