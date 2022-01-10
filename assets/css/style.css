@@ -7,7 +7,7 @@
     --incorrect-color: #db314a;
 }
 
-h1, h2, h3, p, ul, button {
+h1, h2, h3, p, ul, button, label {
     font-family: Comfortaa;
     color: var(--text-color);
 }
@@ -53,7 +53,7 @@ ul {
     list-style: none;
 }
 
-#timer-card, #high-scores, #start-button {
+#timer-card, #high-scores, #start-button, button {
     color: var(--text-color);
     padding: 10px;
     background-color: var(--dark-color);

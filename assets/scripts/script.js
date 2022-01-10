@@ -14,7 +14,7 @@ var questionTitle = document.getElementById("question-title")
 var answerOptions = document.getElementById("answer-options")
 
 
-var highScoresList = document.querySelector("#high-scores-list")
+var highScoresDisplay = document.querySelector("#high-scores-display")
 var clearHighScoresList = document.querySelector("#clear-high-scores")
 var backToStart = document.querySelector("#back-to-start")
 
@@ -27,7 +27,7 @@ var questions = [
         questionTitle: "Which is Australia's second largest state by area?",
         answers: [
             "New South Wales",
-            "Queensland (correct answer)", 
+            "Queensland", 
             "South Australia",
             "Western Australia", 
         ],
@@ -39,7 +39,7 @@ var questions = [
         answers: [
             "Gibson Desert",
             "Great Sandy Desert",  
-            "Great Victoria Desert (correct answer)",
+            "Great Victoria Desert",
             "Simpson Desert", 
         ],
         correctAnswer: 2,
@@ -49,7 +49,7 @@ var questions = [
         questionTitle: "Which body of water is home to the Great Barrier Reef?",
         answers: [
             "Arafura Sea",
-            "Coral sea (correct answer)",  
+            "Coral sea",  
             "Solomon Sea",
             "Timor sea", 
         ],
@@ -59,7 +59,7 @@ var questions = [
         questionNumber: "Question 4",
         questionTitle: "The Ashmore and Cartier Islands are situated in which ocean?",
         answers: [
-            "Indian Ocean (correct answer)", 
+            "Indian Ocean", 
             "Atlantic Ocean",
             "Pacific Ocean",
             "Southern Ocean", 
@@ -73,7 +73,7 @@ var questions = [
             "Badu Island", 
             "Horn Island",
             "Murray Island",
-            "Thursday Island (correct answer)", 
+            "Thursday Island", 
         ],
         correctAnswer: 3,
     },
@@ -81,6 +81,39 @@ var questions = [
 
 
 var questionIndex = 0;
+
+var initialsInput = document.querySelector("#initials");
+var scoresForm = document.querySelector("#scores-form")
+var submitScore = document.querySelector("#submit-score")
+var highScoresList = [];
+
+function getHighScores() {
+    var storedScores = JSON.parse(localStorage.getItem("highScoresList"))
+    
+    if (storedScores !== null) {
+        highScoresList = storedScores;
+    }
+}
+
+function storeScores() {
+    localStorage.setItem("highScoresList", JSON.stringify(highScoresList));
+}
+
+scoresForm.addEventListener("click", function() {
+    
+    var initials = initialsInput.value.trim();
+
+    if (initials === "") {
+        return;
+    }
+
+    highScoresList.push(initials + "-" + newScore);
+    initialsInput.value = "";
+
+    storeScores();
+    // getHighScores(); 
+});
+
 
 function startTimer() {
     var timerInterval = setInterval(function() {
@@ -132,20 +165,19 @@ startButton.addEventListener("click", startGame);
 
 function renderHighScores() {
     startGameSection.setAttribute("hidden", true);
-    currentScoreSection = document.getElementById("scores").hidden = true;
     questionSection = document.getElementById("questions").hidden = true;
-    scoreboardSection = document.getElementById("scoreboard").hidden = false;
+    scoreboardSection = document.querySelector("#scoreboard").hidden = false;
     
-    getHighScores()
+    getHighScores();
 
     // Loop through to add the high scores and render in a list
     for (var i = 0; i < highScoresList.length; i++) {
 
         var li = document.createElement("li");
         li.textContent = highScoresList[i];
-        highScoresList.appendChild(li);
+        highScoresDisplay.appendChild(li);
     }
-};
+}
 
 // Capture selected answer
 function checkAnswer(t) {
@@ -162,7 +194,10 @@ function checkAnswer(t) {
         
     } else {
         answerResponse.textContent = "Sorry, that's not right";
-        // TODO: Decriment time based on incorrect answer
+
+        // Decrement time if the answer is incorrect
+        timerDecrement = 10;
+        secondsRemaining = (secondsRemaining - timerDecrement--);
     }
 
     // Remove previous answers
@@ -185,59 +220,19 @@ function checkAnswer(t) {
         timer.textContent = "Game complete!";
 
         newScore = secondsRemaining
-        newScore.textContent = "Your final score is " + finalScore;
+        finalScore.textContent = "Your final score is " + newScore;
     };
 }
 answerOptions.addEventListener("click", checkAnswer);
-
-
-// TODO: At the end of the game, enter initials and save score
-var initialsInput = document.querySelector("#initials");
-var scoresForm = document.querySelector("#scores-form")
-var submitScore = document.querySelector("#submit-score")
-var highScoresList = [];
-
-function getHighScores() {
-    var storedScores = JSON.parse(localStorage.getItem("highScoresList"))
-    
-    if (storedScores !== null) {
-        highScoresList = storedScores;
-    }
-}
-
-function storeScores() {
-    localStorage.setItem("highScoresList", JSON.stringify(highScoresList));
-}
-
-scoresForm.addEventListener("click", function() {
-    
-    var initials = initialsInput.value.trim();
-
-    if (initials === "") {
-        return;
-    }
-
-    highScoresList.push(initials + "-" + newScore);
-    initialsInput.value = "";
-
-    storeScores();
-    getHighScores(); 
-});
-
-
-
-// Fetch array from local storage, add to the array and save it to local storage
-// Save high score with localStorage.getItem which will give a string
-
-
 
 
 // Navigate to the high scores section
 highScoresButton.addEventListener("click", renderHighScores);
 
 // Clear high scores when the option is selected
-clearHighScoresList.addEventListener("click", function() {
-    highScoresList = [];
+clearHighScoresList.addEventListener("click", function(event) {
+    event.preventDefault();
+    localStorage.clear(highScoresList); 
 })
 
 // Navigate back to start of game if option is selected
