@@ -25,7 +25,7 @@ To clone the repo, follow the instructions by following the instructions at [clo
 2. Change the current working directory to the location where you want the cloned directory
 3. Type git clone, and then paste the URL you copied earlier
 ```
-$ git clone https://github.com/rachel-harris-coding-quiz/
+$ git clone https://github.com/RachelHarris90/coding-quiz.git
 ```
 4. Press Enter
 
