@@ -1,6 +1,6 @@
 // Sections on the page to show/hide based on stage of game
 var questionSection = document.getElementById("questions").hidden = true;
-var currentScoreSection = document.getElementById("scores").hidden = true;
+var saveScoreSection = document.getElementById("save-scores").hidden = true;
 var scoreboardSection = document.getElementById("scoreboard").hidden = true;
 var startGameSection = document.getElementById("start-game")
 var startButton = document.getElementById("start-button")
@@ -12,6 +12,8 @@ var secondsRemaining = 61;
 var questionNumber = document.getElementById("question-number")
 var questionTitle = document.getElementById("question-title")
 var answerOptions = document.getElementById("answer-options")
+
+var playersInitials = document.getElementById("initials")
 
 
 var highScoresList = document.querySelector("#high-scores-list")
@@ -178,7 +180,7 @@ function checkAnswer(t) {
         console.log("Question index is: " + questionIndex);
     // If there are no more questions, go to the high scores page
     } else {
-        renderHighScores();
+        saveScoreSection = document.getElementById("questions").hidden = false;
         clearInterval(secondsRemaining);
     };
 
