@@ -13,8 +13,6 @@ var questionNumber = document.getElementById("question-number")
 var questionTitle = document.getElementById("question-title")
 var answerOptions = document.getElementById("answer-options")
 
-var playersInitials = document.getElementById("initials")
-
 
 var highScoresList = document.querySelector("#high-scores-list")
 var clearHighScoresList = document.querySelector("#clear-high-scores")
@@ -78,8 +76,6 @@ var questions = [
     },
   ];
 
-// TODO: Remove placeholder names
-var highScoresArray = ["RH - 54", "LR - 32"];
 
 var questionIndex = 0;
 
@@ -137,12 +133,15 @@ function renderHighScores() {
     questionSection = document.getElementById("questions").hidden = true;
     scoreboardSection = document.getElementById("scoreboard").hidden = false;
 
+    // 
+    // getHighScores()
+
     // TODO: Get these from local storage instead of hard coded
     // Loop through to add the high scores and render in a list
-    for (var i = 0; i < highScoresArray.length; i++) {
+    for (var i = 0; i < highScoresList.length; i++) {
 
         var li = document.createElement("li");
-        li.textContent = highScoresArray[i];
+        li.textContent = highScoresList[i];
         highScoresList.appendChild(li);
     }
 };
@@ -182,21 +181,48 @@ function checkAnswer(t) {
     } else {
         saveScoreSection = document.getElementById("questions").hidden = false;
         clearInterval(secondsRemaining);
+        return;
     };
-
 }
 
 answerOptions.addEventListener("click", checkAnswer);
 
 
-
-
-
-
-
 // TODO: At the end of the game, enter initials and save score
+var initialsInput = document.querySelector("#initials");
+var scoresForm = document.querySelector("#scores-form")
+var submitScore = document.querySelector("#submit-score")
+var highScoresList = [];
+
+function getHighScores() {
+    var storedScores = JSON.parse(localStorage.getItem("highScoresList"))
+    
+    if (storedScores !== null) {
+        highScoresList = storedScores;
+    }
+}
+
+function storeScores() {
+    localStorage.setItem("highScoresList", JSON.stringify(highScoresList));
+}
+
+scoresForm.addEventListener("click", function() {
+    
+    var initials = initialsInput.value.trim();
+
+    if (initials === "") {
+        return;
+    }
+
+    highScoresList.push(initials)
+    initialsInput.value = "";
+
+    getHighScores(); 
+});
+
+
+
 // Fetch array from local storage, add to the array and save it to local storage
-// Store in an array by concatenating initials and score [IN - 34]
 // Save high score with localStorage.getItem which will give a string
 
 
