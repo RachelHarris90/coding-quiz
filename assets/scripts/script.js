@@ -21,6 +21,11 @@ var backToStart = document.querySelector("#back-to-start")
 var finalScore = document.querySelector("#final-score")
 var newScore
 
+var initialsInput = document.querySelector("#initials");
+var scoresForm = document.querySelector("#scores-form")
+var submitScore = document.querySelector("#submit-score")
+var highScoresList = [];
+
 var questions = [ 
     {
         questionNumber: "Question 1",
@@ -82,11 +87,6 @@ var questions = [
 
 var questionIndex = 0;
 
-var initialsInput = document.querySelector("#initials");
-var scoresForm = document.querySelector("#scores-form")
-var submitScore = document.querySelector("#submit-score")
-var highScoresList = [];
-
 function getHighScores() {
     var storedScores = JSON.parse(localStorage.getItem("highScoresList"))
     
@@ -95,25 +95,21 @@ function getHighScores() {
     }
 }
 
-function storeScores() {
-    localStorage.setItem("highScoresList", JSON.stringify(highScoresList));
-}
-
-scoresForm.addEventListener("click", function() {
+function renderHighScores() {
+    startGameSection.setAttribute("hidden", true);
+    questionSection = document.getElementById("questions").hidden = true;
+    scoreboardSection = document.querySelector("#scoreboard").hidden = false;
     
-    var initials = initialsInput.value.trim();
+    getHighScores();
 
-    if (initials === "") {
-        return;
+    // Loop through to add the high scores and render in a list
+    for (var i = 0; i < highScoresList.length; i++) {
+
+        var li = document.createElement("li");
+        li.textContent = highScoresList[i];
+        highScoresDisplay.appendChild(li);
     }
-
-    highScoresList.push(initials + "-" + newScore);
-    initialsInput.value = "";
-
-    storeScores();
-    // getHighScores(); 
-});
-
+}
 
 function startTimer() {
     var timerInterval = setInterval(function() {
@@ -127,6 +123,7 @@ function startTimer() {
         }
     }, 1000);
 }
+
 
 function showQuestions() {
     questionSection = document.getElementById("questions").hidden = false;
@@ -159,25 +156,9 @@ function startGame() {
     // Run the show questions function
     showQuestions();
     startTimer();
+    getHighScores();
   }
 startButton.addEventListener("click", startGame);
-
-
-function renderHighScores() {
-    startGameSection.setAttribute("hidden", true);
-    questionSection = document.getElementById("questions").hidden = true;
-    scoreboardSection = document.querySelector("#scoreboard").hidden = false;
-    
-    getHighScores();
-
-    // Loop through to add the high scores and render in a list
-    for (var i = 0; i < highScoresList.length; i++) {
-
-        var li = document.createElement("li");
-        li.textContent = highScoresList[i];
-        highScoresDisplay.appendChild(li);
-    }
-}
 
 // Capture selected answer
 function checkAnswer(t) {
@@ -212,21 +193,38 @@ function checkAnswer(t) {
         showQuestions();
         console.log("Question length is: " + questions.length);
         console.log("Question index is: " + questionIndex);
-    // If there are no more questions, go to the high scores page
+    // If there are no more questions, go to the page to enter initials and stop timer
     } else {
         var questionSection = document.getElementById("questions").hidden = true;
         var saveScoreSection = document.getElementById("save-scores").hidden = false;
-        clearInterval(secondsRemaining);
-        timer.textContent = "Game complete!";
 
         newScore = secondsRemaining
         finalScore.textContent = "Your final score is " + newScore;
-    };
+
+        timer.textContent = "Game complete!";
+        clearInterval(secondsRemaining);
+    }
 }
 answerOptions.addEventListener("click", checkAnswer);
 
+// Add score after completing the game
+scoresForm.addEventListener("click", function() {
+    
+    var initials = initialsInput.value.trim();
 
-// Navigate to the high scores section
+    if (initials === "") {
+        return;
+    }
+
+    highScoresList.push(initials + "-" + newScore);
+    initialsInput.value = "";
+
+    localStorage.setItem("highScoresList", JSON.stringify(highScoresList));
+
+    getHighScores();
+});
+
+// Navigate to the high scores section 
 highScoresButton.addEventListener("click", renderHighScores);
 
 // Clear high scores when the option is selected
@@ -235,7 +233,7 @@ clearHighScoresList.addEventListener("click", function(event) {
     localStorage.clear(highScoresList); 
 })
 
-// Navigate back to start of game if option is selected
+// Navigate back to home page if option is selected
 backToStart.addEventListener("click", function() {
     startGameSection.setAttribute("hidden", false);
     currentScoreSection.setAttribute("hidden", true);
